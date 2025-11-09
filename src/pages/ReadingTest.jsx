@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const ReadingTest = () => {
     const navigate = useNavigate();
-    const [timeLeft, setTimeLeft] = useState(1 * 10);
+    const [timeLeft, setTimeLeft] = useState(60 * 60);
     const [currentPart, setCurrentPart] = useState(1);
     const [answers, setAnswers] = useState(() => JSON.parse(localStorage.getItem("readingAnswers") || "{}"));
 

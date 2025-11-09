@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const ListeningTest = () => {
     const navigate = useNavigate();
     const audioRef = useRef(null);
-    const [timeLeft, setTimeLeft] = useState(1 * 10); // 40 minutes
+    const [timeLeft, setTimeLeft] = useState(40 * 60); // 40 minutes
     const [currentPart, setCurrentPart] = useState(1);
     const [answers, setAnswers] = useState({});
     const TELEGRAM_BOT_TOKEN = "8293510200:AAFuQAvlbLEIWKXz01liE38ooOwM0t7f6CA";
