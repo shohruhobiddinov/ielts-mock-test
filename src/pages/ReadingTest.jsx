@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 const ReadingTest = () => {
     const navigate = useNavigate();
     const [timeLeft, setTimeLeft] = useState(60 * 60);
+    // const [timeLeft, setTimeLeft] = useState(1 * 10);
     const [currentPart, setCurrentPart] = useState(1);
     const [answers, setAnswers] = useState(() => JSON.parse(localStorage.getItem("readingAnswers") || "{}"));
 
@@ -32,6 +33,7 @@ const ReadingTest = () => {
         setAnswers(newAnswers);
         localStorage.setItem("readingAnswers", JSON.stringify(newAnswers));
     };
+
 
     return (
         <div className="min-h-screen bg-white text-black flex flex-col text-lg h-[100vh]">

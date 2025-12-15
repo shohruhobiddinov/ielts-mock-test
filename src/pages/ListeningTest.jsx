@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+
 
 const ListeningTest = () => {
     const navigate = useNavigate();
     const audioRef = useRef(null);
     const [timeLeft, setTimeLeft] = useState(40 * 60); // 40 minutes
+    // const [timeLeft, setTimeLeft] = useState(1 * 10); // 40 minutes
     const [currentPart, setCurrentPart] = useState(1);
-    const [answers, setAnswers] = useState({});
+    const [answers, setAnswers] = useState(
+        () => JSON.parse(localStorage.getItem("listeningAnswers") || "{}")
+    );
     const TELEGRAM_BOT_TOKEN = "8293510200:AAFuQAvlbLEIWKXz01liE38ooOwM0t7f6CA";
     const TELEGRAM_CHAT_ID = "1736820935";
 
@@ -39,8 +44,13 @@ const ListeningTest = () => {
 
 
     const handleAnswerChange = (index, value) => {
-        setAnswers((prev) => ({ ...prev, [index]: value }));
+        const newAnswers = { ...answers, [index]: value };
+        setAnswers(newAnswers);
+        localStorage.setItem("listeningAnswers", JSON.stringify(newAnswers));
     };
+
+
+
 
     const formatTime = (seconds) => {
         const m = Math.floor(seconds / 60).toString().padStart(2, "0");
@@ -1014,282 +1024,3 @@ const ListeningTest = () => {
 };
 
 export default ListeningTest;
-
-
-// import React, { useState, useEffect, useRef } from "react";
-// import { useNavigate } from "react-router-dom";
-// import axios from "axios";
-//
-// const TELEGRAM_BOT_TOKEN = "8293510200:AAFuQAvlbLEIWKXz01liE38ooOwM0t7f6CA"; // replace with your bot token
-// const TELEGRAM_CHAT_ID = "1736820935"; // replace with your chat ID
-//
-// const ListeningTest = () => {
-//     const navigate = useNavigate();
-//     const audioRef = useRef(null);
-//     const [timeLeft, setTimeLeft] = useState(40 * 60); // 40 minutes
-//     const [currentPart, setCurrentPart] = useState(1);
-//     const [answers, setAnswers] = useState({});
-//
-//     // Timer countdown
-//     useEffect(() => {
-//         const timer = setInterval(() => {
-//             setTimeLeft((prev) => {
-//                 if (prev <= 1) {
-//                     clearInterval(timer);
-//                     handleSubmit(); // send answers to Telegram
-//                     navigate("/reading", { state: { listeningAnswers: answers } });
-//                     return 0;
-//                 }
-//                 return prev - 1;
-//             });
-//         }, 1000);
-//         return () => clearInterval(timer);
-//     }, [navigate, answers]);
-//
-//     // Auto play audio
-//     useEffect(() => {
-//         const audio = audioRef.current;
-//         if (audio) {
-//             audio.play().catch(() => {
-//                 alert("Click anywhere to start the audio.");
-//             });
-//         }
-//     }, []);
-//
-//     const handleAnswerChange = (index, value) => {
-//         setAnswers((prev) => ({ ...prev, [index]: value }));
-//     };
-//
-//     const formatTime = (seconds) => {
-//         const m = Math.floor(seconds / 60).toString().padStart(2, "0");
-//         const s = (seconds % 60).toString().padStart(2, "0");
-//         return `${m}:${s}`;
-//     };
-//
-//     const handleSubmit = async () => {
-//         try {
-//             const message = Object.entries(answers)
-//                 .map(([key, val]) => `${key}: ${Array.isArray(val) ? val.join(", ") : val}`)
-//                 .join("\n");
-//
-//             await axios.post(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
-//                 chat_id: TELEGRAM_CHAT_ID,
-//                 text: `Listening Test Answers:\n${message}`,
-//             });
-//             alert("Answers sent successfully!");
-//         } catch (error) {
-//             console.error("Failed to send answers to Telegram:", error);
-//         }
-//     };
-//
-//     return (
-//         <div className="flex flex-col h-screen bg-white p-6">
-//             {/* Navbar */}
-//             <div className="flex justify-between items-center mb-4">
-//                 <h1 className="text-2xl font-bold text-black">Listening Test</h1>
-//                 <div className="text-lg font-bold text-black">{formatTime(timeLeft)}</div>
-//             </div>
-//
-//             {/* Hidden audio */}
-//             <audio ref={audioRef} src="/audio/listening-test.mp3" autoPlay hidden />
-//
-//             {/* Questions */}
-//             <div className="flex-1 overflow-y-auto p-4 border border-gray-300 rounded-lg mb-4">
-//                 {/* ================== PART 1 ================== */}
-//                 {currentPart === 1 && (
-//                     <>
-//                         <h2 className="text-xl font-bold mb-4 text-black">Part 1: Questions 1–10</h2>
-//                         <p className="mb-4 font-semibold text-black">Listen and complete the table.</p>
-//
-//                         {/* Example of question 1 input */}
-//                         {Array.from({ length: 10 }, (_, i) => i + 1).map((q) => (
-//                             <div key={q} className="mb-4">
-//                                 <p className="mb-1 font-bold text-black">{q}. Example question text here</p>
-//                                 <input
-//                                     type="text"
-//                                     value={answers[q] || ""}
-//                                     onChange={(e) => handleAnswerChange(q, e.target.value)}
-//                                     className="border border-gray-400 rounded px-2 py-1 w-full md:w-1/2 focus:outline-none focus:ring-1 focus:ring-black"
-//                                     placeholder={`Answer ${q}`}
-//                                 />
-//                             </div>
-//                         ))}
-//                     </>
-//                 )}
-//
-//                 {/* ================== PART 2 ================== */}
-//                 {currentPart === 2 && (
-//                     <>
-//                         <h2 className="text-xl font-bold mb-4 text-black">Part 2: Questions 11–20</h2>
-//                         <p className="mb-4 font-semibold text-black">Select the correct answer for each question.</p>
-//
-//                         {/* Questions 11-15 radio buttons */}
-//                         {Array.from({ length: 5 }, (_, i) => i + 11).map((q) => (
-//                             <div key={q} className="mb-4">
-//                                 <p className="mb-1 font-bold text-black">{q}. Example question text</p>
-//                                 {["A", "B", "C"].map((opt) => (
-//                                     <label key={opt} className="flex items-center gap-2 text-black">
-//                                         <input
-//                                             type="radio"
-//                                             name={`q${q}`}
-//                                             value={opt}
-//                                             checked={answers[q] === opt}
-//                                             onChange={(e) => handleAnswerChange(q, e.target.value)}
-//                                             className="accent-black"
-//                                         />
-//                                         {opt}
-//                                     </label>
-//                                 ))}
-//                             </div>
-//                         ))}
-//
-//                         {/* Questions 16-20 select dropdowns */}
-//                         <p className={'font-bold mt-5'}>Questions 16-20</p>
-//                         <p>What activity can visitors do in each of the following exhibits?</p>
-//                         <p>Choose <strong>FIVE</strong> answers from the box and write the correct letter, <strong>A-G</strong>, next to questions 16-20.</p>
-//
-//                         <p className="font-bold my-2">Activities</p>
-//                         {[
-//                             "A sing songs",
-//                             "B buy gifts",
-//                             "C learn about nature",
-//                             "D make a boat",
-//                             "E watch a show",
-//                             "F get to know people",
-//                             "G buy a snack",
-//                         ].map((act) => (
-//                             <p className="my-2" key={act}><strong>{act[0]}</strong> {act.slice(2)}</p>
-//                         ))}
-//
-//                         {["Eagle Trading Post", "Bike Barn", "Long Trail Lake", "Pioneer Hall", "Crockett's Campfire"].map(
-//                             (loc, i) => (
-//                                 <div key={i} className="mb-4">
-//                                     <p className="mb-1 font-bold text-black">{16 + i}. {loc}</p>
-//                                     <select
-//                                         value={answers[16 + i] || ""}
-//                                         onChange={(e) => handleAnswerChange(16 + i, e.target.value)}
-//                                         className="border border-gray-400 rounded px-2 py-1 w-full md:w-1/2 focus:outline-none focus:ring-1 focus:ring-black"
-//                                     >
-//                                         <option value="">Select answer</option>
-//                                         {[
-//                                             "A sing songs",
-//                                             "B buy gifts",
-//                                             "C learn about nature",
-//                                             "D make a boat",
-//                                             "E watch a show",
-//                                             "F get to know people",
-//                                             "G buy a snack",
-//                                         ].map((opt) => (
-//                                             <option key={opt} value={opt}>{opt[0]}</option>
-//                                         ))}
-//                                     </select>
-//                                 </div>
-//                             )
-//                         )}
-//                     </>
-//                 )}
-//
-//                 {/* ================== PART 3 ================== */}
-//                 {currentPart === 3 && (
-//                     <>
-//                         <h2 className="text-xl font-bold mb-4 text-black">Part 3: Research Project (Questions 21-30)</h2>
-//                         <p className="mb-4 font-semibold text-black">Answer the questions below.</p>
-//
-//                         {/* Questions 21-26 radio */}
-//                         {Array.from({ length: 6 }, (_, i) => i + 21).map((q) => (
-//                             <div key={q} className="mb-4">
-//                                 <p className="mb-1 font-bold text-black">{q}. Example question text</p>
-//                                 {["A", "B", "C"].map((opt) => (
-//                                     <label key={opt} className="flex items-center gap-2 text-black">
-//                                         <input
-//                                             type="radio"
-//                                             name={`q${q}`}
-//                                             value={opt}
-//                                             checked={answers[q] === opt}
-//                                             onChange={(e) => handleAnswerChange(q, e.target.value)}
-//                                             className="accent-black"
-//                                         />
-//                                         {opt}
-//                                     </label>
-//                                 ))}
-//                             </div>
-//                         ))}
-//
-//                         {/* Questions 27-30 checkboxes */}
-//                         {[
-//                             { q: 27, title: "Which TWO strategies will John use?" },
-//                             { q: 30, title: "Which TWO pieces of advice does the tutor give?" },
-//                         ].map(({ q, title }) => (
-//                             <div key={q} className="mb-4">
-//                                 <p className="mb-1 font-bold text-black">{q}-{q+1}. {title}</p>
-//                                 {["A", "B", "C", "D", "E"].map((opt) => (
-//                                     <label key={opt} className="flex items-center gap-2 text-black">
-//                                         <input
-//                                             type="checkbox"
-//                                             checked={answers[q]?.includes(opt) || false}
-//                                             disabled={!answers[q]?.includes(opt) && (answers[q]?.length >= 2)}
-//                                             onChange={() => {
-//                                                 setAnswers((prev) => ({
-//                                                     ...prev,
-//                                                     [q]: prev[q]?.includes(opt)
-//                                                         ? prev[q].filter((v) => v !== opt)
-//                                                         : [...(prev[q] || []), opt],
-//                                                 }));
-//                                             }}
-//                                             className="accent-black"
-//                                         />
-//                                         {opt}
-//                                     </label>
-//                                 ))}
-//                             </div>
-//                         ))}
-//                     </>
-//                 )}
-//
-//                 {/* ================== PART 4 ================== */}
-//                 {currentPart === 4 && (
-//                     <>
-//                         <h2 className="text-xl font-bold mb-4 text-black">Part 4: Science in the Future (Questions 31-40)</h2>
-//                         <p className="mb-4 font-semibold text-black">Complete the notes below. Write ONE WORD ONLY for each answer.</p>
-//
-//                         {Array.from({ length: 10 }, (_, i) => i + 31).map((q) => (
-//                             <div key={q} className="mb-4 flex items-center gap-2">
-//                                 <span className="text-black">Question {q} text</span>
-//                                 <input
-//                                     type="text"
-//                                     value={answers[q] || ""}
-//                                     onChange={(e) => handleAnswerChange(q, e.target.value)}
-//                                     className="border border-gray-400 rounded px-2 py-1 w-[150px] focus:outline-none focus:ring-1 focus:ring-black"
-//                                     placeholder={q}
-//                                 />
-//                             </div>
-//                         ))}
-//                     </>
-//                 )}
-//             </div>
-//
-//             {/* Footer: Part buttons */}
-//             <div className="flex justify-center gap-4 mb-4">
-//                 {[1, 2, 3, 4].map((p) => (
-//                     <button
-//                         key={p}
-//                         onClick={() => setCurrentPart(p)}
-//                         className={`px-4 py-2 rounded-lg font-bold border ${
-//                             currentPart === p ? "bg-black text-white" : "bg-white text-black border-black"
-//                         }`}
-//                     >
-//                         Part {p}
-//                     </button>
-//                 ))}
-//                 <button
-//                     onClick={handleSubmit}
-//                     className="px-4 py-2 rounded-lg font-bold bg-green-600 text-white"
-//                 >
-//                     Submit Answers
-//                 </button>
-//             </div>
-//         </div>
-//     );
-// };
-//
-// export default ListeningTest;
