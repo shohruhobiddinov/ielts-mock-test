@@ -7,14 +7,17 @@ function WritingTest() {
     const navigate = useNavigate();
     const studentName = localStorage.getItem("studentName") || "Anonymous";
 
-    const [timeLeft, setTimeLeft] = useState(60 * 60); // 60 minutes
-    // const [timeLeft, setTimeLeft] = useState(1 * 10); // 60 minutes
+    // const [timeLeft, setTimeLeft] = useState(60 * 60); // 60 minutes
+    const [timeLeft, setTimeLeft] = useState(1 * 30);
     const [currentTask, setCurrentTask] = useState(1); // 1 or 2
     const [task1, setTask1] = useState(localStorage.getItem("writingTask1") || "");
     const [task2, setTask2] = useState(localStorage.getItem("writingTask2") || "");
 
     const task1Ref = useRef(null);
     const task2Ref = useRef(null);
+
+    const finishedRef = useRef(false);
+
 
     // Countdown timer
     useEffect(() => {
@@ -44,6 +47,9 @@ function WritingTest() {
 
     // Finish test and send data to Telegram
     const handleFinish = async () => {
+        if (finishedRef.current) return; // ✅ prevent duplicate send
+        finishedRef.current = true;
+
         const latestTask1 = task1Ref.current?.value || task1;
         const latestTask2 = task2Ref.current?.value || task2;
 
@@ -76,6 +82,7 @@ function WritingTest() {
 
         navigate("/end");
     };
+
 
     return (
         <div className="min-h-screen bg-white text-black flex flex-col text-lg">

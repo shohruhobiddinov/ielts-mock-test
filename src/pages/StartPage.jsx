@@ -11,7 +11,7 @@ function StartPage() {
             return;
         }
         localStorage.setItem("studentName", name.trim());
-        navigate("/listening");
+        navigate("/listening-instructions");
     };
 
     return (

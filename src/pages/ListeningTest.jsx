@@ -6,8 +6,8 @@ import axios from "axios";
 const ListeningTest = () => {
     const navigate = useNavigate();
     const audioRef = useRef(null);
-    const [timeLeft, setTimeLeft] = useState(32 * 60); // 32 minutes
-    // const [timeLeft, setTimeLeft] = useState(1 * 10); //
+    // const [timeLeft, setTimeLeft] = useState(32 * 60); // 32 minutes
+    const [timeLeft, setTimeLeft] = useState(1 * 60); //
     const [currentPart, setCurrentPart] = useState(1);
     const [answers, setAnswers] = useState(
         () => JSON.parse(localStorage.getItem("listeningAnswers") || "{}")
@@ -23,7 +23,7 @@ const ListeningTest = () => {
             setTimeLeft((prev) => {
                 if (prev <= 1) {
                     clearInterval(timer);
-                    navigate("/reading", { state: { listeningAnswers: answers } });
+                    navigate("/reading-instructions", { state: { listeningAnswers: answers } });
                     return 0;
                 }
                 return prev - 1;
