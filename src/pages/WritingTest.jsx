@@ -7,8 +7,8 @@ function WritingTest() {
     const navigate = useNavigate();
     const studentName = localStorage.getItem("studentName") || "Anonymous";
 
-    // const [timeLeft, setTimeLeft] = useState(60 * 60); // 60 minutes
-    const [timeLeft, setTimeLeft] = useState(1 * 30);
+    const [timeLeft, setTimeLeft] = useState(60 * 60); // 60 minutes
+    // const [timeLeft, setTimeLeft] = useState(1 * 30);
     const [currentTask, setCurrentTask] = useState(1); // 1 or 2
     const [task1, setTask1] = useState(localStorage.getItem("writingTask1") || "");
     const [task2, setTask2] = useState(localStorage.getItem("writingTask2") || "");
