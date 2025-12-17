@@ -471,6 +471,12 @@ const ReadingTest = () => {
                                 </div>
                             ))}
 
+                            <p className={"font-semibold"}>List of Researchers</p>
+                            <p> <b>A</b> Colin Ellard</p>
+                            <p> <b>B</b> Brendan Walker</p>
+                            <p> <b>C</b> Rudd, Vohs and Aaker</p>
+                            <p> <b>D</b> Charles Montgomery</p> <br/>
+
                             {/* Questions 24-26: Summary completion */}
                             <p className="font-semibold mb-2">Questions 24–26: Complete the summary below (ONE WORD
                                 ONLY)</p>
