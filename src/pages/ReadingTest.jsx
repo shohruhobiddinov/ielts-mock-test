@@ -34,6 +34,10 @@ const ReadingTest = () => {
         localStorage.setItem("readingAnswers", JSON.stringify(newAnswers));
     };
 
+    const goToWritingInstructions = () => {
+        navigate("/writing-instructions");
+    };
+
 
     return (
         <div className="min-h-screen bg-white text-black flex flex-col text-lg h-[100vh]">
@@ -667,6 +671,14 @@ const ReadingTest = () => {
                         Part {part}
                     </button>
                 ))}
+                <div className="flex justify-center">
+                    <button
+                        onClick={goToWritingInstructions}
+                        className="px-8 py-3 bg-black text-white font-bold rounded-lg hover:bg-gray-900 transition"
+                    >
+                        Submit & Start Writing
+                    </button>
+                </div>
             </div>
         </div>
     );

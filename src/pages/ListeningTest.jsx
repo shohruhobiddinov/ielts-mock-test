@@ -1028,7 +1028,7 @@ const ListeningTest = () => {
                         onClick={goToReadingInstructions}
                         className="px-8 py-3 bg-black text-white font-bold rounded-lg hover:bg-gray-900 transition"
                     >
-                        Submit
+                        Submit & Start Reading
                     </button>
                 </div>
 

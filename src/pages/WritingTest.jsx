@@ -161,7 +161,8 @@ function WritingTest() {
             </div>
 
             {/* Footer */}
-            <div className="flex justify-center gap-4 p-4 border-t border-gray-300 fixed bottom-0 left-0 right-0 bg-white z-10">
+            <div
+                className="flex justify-center gap-4 p-4 border-t border-gray-300 fixed bottom-0 left-0 right-0 bg-white z-10">
                 <button
                     onClick={() => setCurrentTask(1)}
                     className={`px-6 py-2 border rounded-lg font-bold ${
@@ -178,6 +179,12 @@ function WritingTest() {
                 >
                     Part 2
                 </button>
+                    <button
+                        onClick={handleFinish}
+                        className="px-8 py-3 bg-black text-white font-bold rounded-lg hover:bg-gray-900 transition"
+                    >
+                        Submit & Finish
+                    </button>
             </div>
         </div>
     );
