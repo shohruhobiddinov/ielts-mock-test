@@ -74,6 +74,11 @@ const ListeningTest = () => {
         }
     };
 
+    const goToReadingInstructions = () => {
+        navigate("/reading-instructions");
+    };
+
+
 
     return (
         <div className="flex flex-col h-screen bg-white p-6">
@@ -1007,7 +1012,7 @@ const ListeningTest = () => {
 
             {/* Footer: Part buttons */}
             <div className="flex justify-center gap-4">
-            {[1, 2, 3, 4].map((p) => (
+                {[1, 2, 3, 4].map((p) => (
                     <button
                         key={p}
                         onClick={() => setCurrentPart(p)}
@@ -1018,7 +1023,17 @@ const ListeningTest = () => {
                         Part {p}
                     </button>
                 ))}
+                <div className="flex justify-center">
+                    <button
+                        onClick={goToReadingInstructions}
+                        className="px-8 py-3 bg-black text-white font-bold rounded-lg hover:bg-gray-900 transition"
+                    >
+                        Submit
+                    </button>
+                </div>
+
             </div>
+
         </div>
     );
 };
